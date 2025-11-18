@@ -6,14 +6,16 @@
 //Tamanho maximo do vetor de cada tipo de agenda
 #define MAX_VETOR 20
 
-void menu_principal(int* opcao);
 void menu_secundario(int tipo_agenda);
+
+void menu_selecionar_opcao(int* opcao);
 void menu_selecionar_operacao(int tipo_agenda, int* operacao);
 
 void operacao_contatos(int operacao);
 void operacao_compromissos(int operacao);
 void operacao_tarefas(int operacao);
 
+//vetor de ponteiros para funcoes de operação de tarefas
 void (*operacoes_agenda[3])(int) = {&operacao_contatos, &operacao_compromissos, &operacao_tarefas};
 
 //var que controla quando o programa deve terminar
@@ -31,7 +33,7 @@ int main(void)
     {
         system("cls");
 
-        menu_principal(&opcao_agenda);
+        menu_selecionar_opcao(&opcao_agenda);
 
         switch (opcao_agenda)
         {
@@ -64,7 +66,7 @@ int main(void)
 //* e pede ao usuario para escolher a opcao. O valor escolhido é passado à *
 //* variavel de opcao recebida.                                            *
 //**************************************************************************
-void menu_principal(int* opcao)
+void menu_selecionar_opcao(int* opcao)
 {
     puts("--------------------------");
     puts("          AGENDA          ");
@@ -81,9 +83,12 @@ void menu_principal(int* opcao)
     while(getchar() != '\n');
 }
 
+//**************************************************************
+//* Controla o menu que aparece apos escolher o tipo de agenda *
+//**************************************************************
 void menu_secundario(int tipo_agenda)
 {
-    //var que controlar quando encerrar o menu secundario
+    //var que controla quando encerrar o menu secundario
     bool terminado_menu_sec = false;
 
     int opcao_operacao;

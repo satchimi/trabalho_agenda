@@ -45,4 +45,6 @@ enum AgendaOperacao {
     OPER_SAIR = 5
 };
 
+//PARA FAZER: declarar as funcoes que fazem as operacoes das tarefas (inserir, listar, buscar)
+
 #endif
