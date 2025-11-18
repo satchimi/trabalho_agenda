@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 #include "agenda.h"
 
 //Tamanho maximo do vetor de cada tipo de agenda
@@ -51,7 +50,6 @@ int main(void)
         default:
 
             puts("Opcao invalida!");
-            getchar();
 
             break;
         }
@@ -79,6 +77,8 @@ void menu_principal(int* opcao)
 
     printf("\nEscolha uma opcao: ");
     scanf(" %d", opcao);
+
+    while(getchar() != '\n');
 }
 
 void menu_secundario(int tipo_agenda)
@@ -118,7 +118,6 @@ void menu_secundario(int tipo_agenda)
         default:
             
             puts("Operacao invalida!");
-            getchar();
     
             break;
         }
@@ -140,10 +139,6 @@ void menu_selecionar_operacao(int tipo_agenda, int* operacao)
 
     char* agenda = agenda_op_nomes[tipo_agenda - 1];
 
-    //puts  ("-----------------------------------------");
-    //printf("          AGENDA DE %s          ", strupr(agenda)); //tentei usar isso e deu segmentation fault :p
-    //puts  ("-----------------------------------------");
-
     printf("1. Adicionar novo(a) %s\n", agenda);
     printf("2. Listar todos(as) os(as) %ss\n", agenda);
     printf("3. Buscar um(a) %s especifico(a)\n", agenda);
@@ -152,6 +147,8 @@ void menu_selecionar_operacao(int tipo_agenda, int* operacao)
 
     printf("\nEscolha uma opcao: ");
     scanf(" %d", operacao);
+
+    while(getchar() != '\n');
 }
 
 void operacao_contatos(int operacao)
