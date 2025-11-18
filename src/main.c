@@ -115,15 +115,90 @@ void menu_selecionar_operacao(int tipo_agenda, int* operacao)
 
 void operacao_contatos(int operacao)
 {
-    
+    switch (operacao)
+    {
+    case OPER_ADICIONAR:
+
+        break;
+
+    case OPER_LISTAR:
+
+        break;
+
+    case OPER_BUSCAR:
+
+        break;
+
+    case OPER_VOLTAR:
+
+        break;
+
+    case OPER_SAIR:
+
+        break;
+
+    default:
+
+        break;
+    }
 }
 
 void operacao_compromissos(int operacao)
 {
+    switch (operacao)
+    {
+    case OPER_ADICIONAR:
 
+        break;
+
+    case OPER_LISTAR:
+
+        break;
+
+    case OPER_BUSCAR:
+
+        break;
+
+    case OPER_VOLTAR:
+
+        break;
+
+    case OPER_SAIR:
+
+        break;
+
+    default:
+    
+        break;
+    }
 }
 
 void operacao_tarefas(int operacao)
 {
+    switch (operacao)
+    {
+    case OPER_ADICIONAR:
 
+        break;
+
+    case OPER_LISTAR:
+
+        break;
+
+    case OPER_BUSCAR:
+
+        break;
+
+    case OPER_VOLTAR:
+
+        break;
+
+    case OPER_SAIR:
+
+        break;
+
+    default:
+    
+        break;
+    }
 }
