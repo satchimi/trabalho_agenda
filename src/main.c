@@ -6,13 +6,18 @@
 #define MAX_VETOR 20
 
 void menu_principal(int* opcao);
+void menu_selecionar_operacao(int tipo_agenda, int* operacao);
+
+void operacao_contatos(int operacao);
+void operacao_compromissos(int operacao);
+void operacao_tarefas(int operacao);
+
+//var que controla quando o programa deve terminar
+bool terminado = false;
 
 int main(void)
 {
-    //var que controla quando o programa deve terminar
-    bool terminado = false;
-
-    int opcao;
+    int opcao_agenda, opcao_operacao;
 
     Contato contatos[MAX_VETOR] = {};
     Compromisso compromissos[MAX_VETOR] = {};
@@ -20,24 +25,44 @@ int main(void)
 
     while(!terminado)
     {
+        menu_principal(&opcao_agenda);
 
-        menu_principal(&opcao);
-
-        switch (opcao)
+        switch (opcao_agenda)
         {
         case OP_CONTATOS:
+            
+            menu_selecionar_operacao(OP_CONTATOS, &opcao_operacao);
+
+            operacao_contatos(opcao_operacao);
+
             break;
+
         case OP_COMPROMISSOS:
 
-            break;
-        case OP_TAREFAS:
+            menu_selecionar_operacao(OP_COMPROMISSOS, &opcao_operacao);
+
+            operacao_compromissos(opcao_operacao);
 
             break;
-        case OP_SAIR:
-            terminado = true;
+
+        case OP_TAREFAS:
+
+            menu_selecionar_operacao(OP_TAREFAS, &opcao_operacao);
+
+            operacao_tarefas(opcao_operacao);
+
             break;
+
+        case OP_SAIR:
+
+            terminado = true;
+
+            break;
+
         default:
+
             puts("Opcao invalida!");
+
             break;
         }
     }
@@ -49,11 +74,10 @@ int main(void)
 //**************************************************************************
 //* Recebe uma variavel de opcao por referencia, imprime as opções na tela *
 //* e pede ao usuario para escolher a opcao. O valor escolhido é passado à *
-//* variavel recebida.                                                     *
+//* variavel de opcao recebida.                                            *
 //**************************************************************************
 void menu_principal(int* opcao)
 {
-
     puts("--------------------------");
     puts("          AGENDA          ");
     puts("--------------------------");
@@ -67,28 +91,39 @@ void menu_principal(int* opcao)
     scanf(" %d", opcao);
 }
 
-/*
-void menu_secundario(void)
+//**************************************************************************
+//* Recebe uma variavel que indica qual o tipo de agenda escolhido e uma   *
+//* variavel de operacao por referencia. Imprime o menu de acordo com o    *
+//* tipo de agenda e pede ao usuario para escolher a operacao. O valor     *
+//* escolhido é passado à variavel de operacao recebida.                   *
+//**************************************************************************
+void menu_selecionar_operacao(int tipo_agenda, int* operacao)
 {
-    //TESTE
-    unsigned int opcao;
+    char* agenda_op_nomes[3] = {"contato", "compromisso", "tarefa"};
 
-    system("cls");
+    char* agenda = agenda_op_nomes[tipo_agenda - 1];
 
+    printf("1. Adicionar novo(a) %s\n", agenda);
+    printf("2. Listar todos(as) os(as) %ss\n", agenda);
+    printf("3. Buscar um(a) %s especifico(a)\n", agenda);
+    puts("4. Voltar ao menu anterior");
+    puts("5. Sair do sistema");
 
-    puts("---------------------------");
-    puts("          OPCAO            ");
-    puts("---------------------------");
+    printf("\nEscolha uma opcao: ");
+    scanf(" %d", operacao);
+}
 
-    puts("1. Adicionar novo registro");
-    puts("2. Listar todos");
-    puts("3. Buscar registro");
-    puts("4. Voltar");
-    puts("5. Sair");
-
-    printf("Escolha uma opcao: ");
-    scanf(" %d", &opcao);
-
+void operacao_contatos(int operacao)
+{
     
 }
-*/
+
+void operacao_compromissos(int operacao)
+{
+
+}
+
+void operacao_tarefas(int operacao)
+{
+
+}

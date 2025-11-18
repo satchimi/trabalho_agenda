@@ -28,11 +28,19 @@ typedef struct structTarefa
     unsigned int status;
 } Tarefa;
 
-enum Opcao {
+enum AgendaOpcao {
     OP_CONTATOS = 1,
     OP_COMPROMISSOS = 2,
     OP_TAREFAS = 3,
     OP_SAIR = 4
+};
+
+enum AgendaOperacao {
+    OPER_ADICIONAR = 1,
+    OPER_LISTAR = 2,
+    OPER_BUSCAR = 3,
+    OPER_VOLTAR = 4,
+    OPER_SAIR = 5
 };
 
 #endif
