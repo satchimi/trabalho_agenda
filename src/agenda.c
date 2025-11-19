@@ -37,7 +37,7 @@ void listaContatos(Contato contatos[], int quant)
     printf("\n--- Lista de Contatos ---\n");
 
     if (quant == 0) {
-        printf("\nNenhum contato cadastrado.\n");
+        printf("\nNenhum contato cadastrado.\n\n");
 
         return;
     }
@@ -83,7 +83,7 @@ void deletarContato(Contato contatos[], int* quant)
     while(getchar() != '\n');
 
     if (id < 1 || id > *quant) {
-        printf("\nNumero invalido!\n\n");
+        printf("\nErro: Contato %d nao existe\n\n", id);
         return;
     }
 
@@ -93,5 +93,5 @@ void deletarContato(Contato contatos[], int* quant)
 
     (*quant)--;
 
-    printf("\n");
+    printf("\nContato %d deletado.\n\n", id);
 }
