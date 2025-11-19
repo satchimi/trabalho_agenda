@@ -21,13 +21,14 @@ void (*operacoes_agenda[3])(int) = {&operacao_contatos, &operacao_compromissos, 
 //var que controla quando o programa deve terminar
 bool terminado_global = false;
 
+//var globais das agendas
+Contato contatos[MAX_VETOR] = {};
+Compromisso compromissos[MAX_VETOR] = {};
+Tarefa tarefas[MAX_VETOR] = {};
+
 int main(void)
 {
     int opcao_agenda;
-
-    Contato contatos[MAX_VETOR] = {};
-    Compromisso compromissos[MAX_VETOR] = {};
-    Tarefa tarefas[MAX_VETOR] = {};
 
     while(!terminado_global)
     {
@@ -157,7 +158,6 @@ void menu_selecionar_operacao(int tipo_agenda, int* operacao)
 void operacao_contatos(int operacao)
 {
     // A agenda de contatos fica guardada aqui
-    static Contato contatos[MAX_VETOR];
     static int quantContatos = 0;
 
     switch (operacao)
