@@ -49,7 +49,8 @@ void QntContatos(Contato *c, int quant)
 
 void pesquisarContato(Contato *c, int quant)
 {
-    char nomeBuscado[21];
+    char nomeBuscado[MAX_NOME];
+
     printf("\nDigite o nome que deseja pesquisar: ");
     scanf("%s", nomeBuscado);
 
@@ -67,5 +68,3 @@ void pesquisarContato(Contato *c, int quant)
 
     printf("\nContato não encontrado.\n");
 }
-
-//PARA FAZER: implementar as funcoes que fazem as operacoes das tarefas (inserir, listar, buscar)
