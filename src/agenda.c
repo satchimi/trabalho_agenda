@@ -1,7 +1,7 @@
-#include "agenda.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "agenda.h"
 
 int adicionarContato(Contato *c, int quant)
 {
@@ -10,7 +10,7 @@ int adicionarContato(Contato *c, int quant)
         printf("\n--- Cadastro de Contato ---\n");
 
         printf("\nDigite o nome do contato a ser salvo: ");
-        scanf("%s", c[quant].nome);
+        scanf("%100[^\n]", c[quant].nome);
 
         printf("\nDigite o seu telefone: ");
         scanf("%s", c[quant].telefone);
