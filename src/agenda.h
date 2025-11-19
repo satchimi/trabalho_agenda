@@ -1,11 +1,13 @@
 #ifndef AGENDA_H
 #define AGENDA_H
-#define MAX_VETOR 20
 
 //---------MODULO AGENDA-----------
 
+//Tamanho maximo do vetor de cada tipo de agenda
+#define MAX_VETOR 20
+
 #define MAX_NOME 100
-#define MAX_TELEFONE 20
+#define MAX_TELEFONE 30
 #define MAX_EMAIL 100
 #define MAX_DESCRICAO 500
 #define MAX_TITULO 100
@@ -42,14 +44,19 @@ enum AgendaOperacao {
     OPER_ADICIONAR = 1,
     OPER_LISTAR = 2,
     OPER_BUSCAR = 3,
-    OPER_VOLTAR = 4,
-    OPER_SAIR = 5
+    OPER_DELETAR = 4,
+    OPER_VOLTAR = 5,
+    OPER_SAIR = 6
 };
 
-//PARA FAZER: declarar as funcoes que fazem as operacoes das tarefas (inserir, listar, buscar)
+//-----FUNCOES CONTATO--------
+int adicionarContato(Contato contatos[], int quant);
+void listaContatos(Contato contatos[], int quant);
+void pesquisarContato(Contato contatos[], int quant);
+void deletarContato(Contato contatos[], int* quant);
 
-int adicionarContato(Contato *c, int quant);
-void QntContatos(Contato *c, int quant);
-void pesquisarContato(Contato *c, int quant);
+//-----FUNCOES COMPROMISSO--------
+
+//-----FUNCOES TAREFA--------
 
 #endif
