@@ -1,5 +1,6 @@
 #ifndef AGENDA_H
 #define AGENDA_H
+#define MAX_VETOR 20
 
 //---------MODULO AGENDA-----------
 
@@ -46,5 +47,9 @@ enum AgendaOperacao {
 };
 
 //PARA FAZER: declarar as funcoes que fazem as operacoes das tarefas (inserir, listar, buscar)
+
+int adicionarContato(Contato *c, int quant);
+void QntContatos(Contato *c, int quant);
+void pesquisarContato(Contato *c, int quant);
 
 #endif

@@ -31,7 +31,6 @@ int main(void)
 
     while(!terminado_global)
     {
-        system("cls");
 
         menu_selecionar_opcao(&opcao_agenda);
 
@@ -83,7 +82,7 @@ void menu_selecionar_opcao(int* opcao)
     while(getchar() != '\n');
 }
 
-//**************************************************************
+//*************************************************************
 //* Controla o menu que aparece apos escolher o tipo de agenda *
 //**************************************************************
 void menu_secundario(int tipo_agenda)
@@ -95,7 +94,6 @@ void menu_secundario(int tipo_agenda)
 
     while (!terminado_menu_sec)
     {
-        system("cls");
 
         menu_selecionar_operacao(tipo_agenda, &opcao_operacao);
     
@@ -158,7 +156,25 @@ void menu_selecionar_operacao(int tipo_agenda, int* operacao)
 
 void operacao_contatos(int operacao)
 {
-    
+    // A agenda de contatos fica guardada aqui
+    static Contato contatos[MAX_VETOR];
+    static int quantContatos = 0;
+
+    switch (operacao)
+    {
+    case OPER_ADICIONAR:
+        quantContatos += adicionarContato(contatos, quantContatos);
+        break;
+
+    case OPER_LISTAR:
+        QntContatos(contatos, quantContatos);
+        break;
+
+    case OPER_BUSCAR:
+        pesquisarContato(contatos, quantContatos);
+        break;
+    }
+
 }
 
 void operacao_compromissos(int operacao)
