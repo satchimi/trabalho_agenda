@@ -1,10 +1,13 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "leitor_string.h"
 
 int ler_linha(char* str, int n)
 {
     int ch;
     int i = 0;
+
+    n--;
 
     while ((ch = getchar()) != '\n')
         if (i < n)
@@ -18,9 +21,17 @@ int ler_palavra(char *str, int n)
     int ch;
     int i = 0;
 
+    n--;
+
+    bool tem_espaco = false;
+
     while ((ch = getchar()) != '\n') {
-        if (ch == ' ') { i++; break; }
-        else if (i < n) { str[i++] = ch; }
+        if (ch == ' ') {
+            tem_espaco = true;
+            continue;
+        }
+        if (i < n && !tem_espaco)
+            str[i++] = ch;
     }
     str[i] = '\0';
 
