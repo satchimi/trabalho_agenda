@@ -35,6 +35,7 @@ int main(void)
 
     system("cls");
 
+    //MENU PRINCIPAL
     while(!terminado_global)
     {
         menu_selecionar_opcao(&opcao_agenda);
