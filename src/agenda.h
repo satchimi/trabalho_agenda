@@ -1,13 +1,15 @@
 #ifndef AGENDA_H
 #define AGENDA_H
 
+#include <stdbool.h>
+
 //---------MODULO AGENDA-----------
 
 //Tamanho maximo do vetor de cada tipo de agenda
 #define MAX_VETOR 20
 
 #define MAX_NOME 100
-#define MAX_TELEFONE 30
+#define MAX_TELEFONE 12
 #define MAX_EMAIL 100
 #define MAX_DESCRICAO 500
 #define MAX_TITULO 100
@@ -49,14 +51,11 @@ enum AgendaOperacao {
     OPER_SAIR = 6
 };
 
-//-----FUNCOES CONTATO--------
 int adicionarContato(Contato contatos[], int quant);
-void listaContatos(Contato contatos[], int quant);
-void pesquisarContato(Contato contatos[], int quant);
-void deletarContato(Contato contatos[], int* quant);
+int listaContatos(Contato contatos[], int quant);
+int pesquisarContato(Contato contatos[], int quant);
+int deletarContato(Contato contatos[], int* quant);
 
-//-----FUNCOES COMPROMISSO--------
-
-//-----FUNCOES TAREFA--------
+bool email_check(const char *email);
 
 #endif
