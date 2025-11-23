@@ -1,7 +1,7 @@
+#include "agenda.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "agenda.h"
 
 int adicionarContato(Contato *c, int quant)
 {
@@ -10,7 +10,7 @@ int adicionarContato(Contato *c, int quant)
         printf("\n--- Cadastro de Contato ---\n");
 
         printf("\nDigite o nome do contato a ser salvo: ");
-        scanf("%100[^\n]", c[quant].nome);
+        scanf("%s", c[quant].nome);
 
         printf("\nDigite o seu telefone: ");
         scanf("%s", c[quant].telefone);
@@ -49,8 +49,7 @@ void QntContatos(Contato *c, int quant)
 
 void pesquisarContato(Contato *c, int quant)
 {
-    char nomeBuscado[MAX_NOME];
-
+    char nomeBuscado[21];
     printf("\nDigite o nome que deseja pesquisar: ");
     scanf("%s", nomeBuscado);
 
@@ -67,9 +66,6 @@ void pesquisarContato(Contato *c, int quant)
     }
 
     printf("\nContato não encontrado.\n");
-<<<<<<< Updated upstream
-}
-=======
 }
 
 int deletarContato(Contato *c, int quant)
@@ -97,4 +93,3 @@ int deletarContato(Contato *c, int quant)
         return 0;
     }
 }
->>>>>>> Stashed changes
