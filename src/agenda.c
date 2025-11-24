@@ -34,7 +34,7 @@ int adicionarContato(Contato contatos[], int quant)
         bool pronto = false;
         while (!pronto)
         {
-            printf("\nDigite o seu telefone. (Ex: 86994523978): ");
+            printf("\nDigite o seu telefone. (Ex: 5586994523978): ");
 
             if (ler_palavra(contato->telefone, MAX_TELEFONE) == 0) {
                 puts("\nO campo de telefone nao pode estar vazio!");
