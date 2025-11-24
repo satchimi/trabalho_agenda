@@ -154,7 +154,7 @@ bool email_check(const char *email)
         if (*email == '@') {
             tem_at = true;
         }
-        if (*email == '.') {
+        else if (*email == '.') {
             tem_dominio = true;
         }
         else if (tem_at) {
@@ -167,7 +167,9 @@ bool email_check(const char *email)
         email++;
     }
 
-    return char_antes_da_at > 0 &&
-           char_depois_da_at > 0 &&
-           char_depois_do_dominio > 0 ? true : false;
+    bool email_valido = char_antes_da_at > 0 &&
+                        char_depois_da_at > 0 &&
+                        char_depois_do_dominio > 0 ? true : false;
+
+    return email_valido;
 }
