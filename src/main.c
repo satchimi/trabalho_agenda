@@ -123,7 +123,6 @@ void menu_secundario(int tipo_agenda)
 //**************************************************************************
 void menu_selecionar_opcao(int* opcao)
 {
-    puts("--------------------------");
     puts("          AGENDA          ");
     puts("--------------------------");
 
