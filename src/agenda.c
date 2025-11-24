@@ -34,7 +34,7 @@ int adicionarContato(Contato contatos[], int quant)
         bool pronto = false;
         while (!pronto)
         {
-            printf("\nDigite o seu telefone. (Ex: 86994523978): ");
+            printf("\nDigite o seu telefone. (Ex: 5586994523978): ");
 
             if (ler_palavra(contato->telefone, MAX_TELEFONE) == 0) {
                 puts("\nO campo de telefone nao pode estar vazio!");
@@ -154,7 +154,7 @@ bool email_check(const char *email)
         if (*email == '@') {
             tem_at = true;
         }
-        if (*email == '.') {
+        else if (*email == '.') {
             tem_dominio = true;
         }
         else if (tem_at) {
@@ -167,7 +167,9 @@ bool email_check(const char *email)
         email++;
     }
 
-    return char_antes_da_at > 0 &&
-           char_depois_da_at > 0 &&
-           char_depois_do_dominio > 0 ? true : false;
+    bool email_valido = char_antes_da_at > 0 &&
+                        char_depois_da_at > 0 &&
+                        char_depois_do_dominio > 0 ? true : false;
+
+    return email_valido;
 }

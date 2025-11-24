@@ -9,7 +9,7 @@
 #define MAX_VETOR 20
 
 #define MAX_NOME 100
-#define MAX_TELEFONE 12
+#define MAX_TELEFONE 14
 #define MAX_EMAIL 100
 #define MAX_DESCRICAO 500
 #define MAX_TITULO 100
