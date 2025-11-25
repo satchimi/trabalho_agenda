@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "leitor_input.h"
 
 int ler_linha(char* str, int n)
@@ -36,6 +37,19 @@ int ler_palavra(char *str, int n)
     str[i] = '\0';
 
     return i;
+}
+
+void adicionar_string(char *str, int pos, char carac) {
+    int len = strlen(str);
+    int i = len;
+
+    // Move os elementos uma unidade para a direita
+    while (i >= pos) {
+        str[i + 1] = str[i];
+        i--;
+    }
+
+    str[pos] = carac;
 }
 
 int ler_numero(int *num)

@@ -1,5 +1,6 @@
+#include <string.h>
 #include "agenda.h"
-
+#include "leitor_input.h"
 
 
 // Função para validar formato básico de e-mail
@@ -36,4 +37,37 @@ bool email_check(const char *email)
                         char_depois_do_dominio > 0 ? true : false;
 
     return email_valido;
+}
+
+int validarTelefone(char *numero) {
+
+    // remove espaços vazios nas laterais
+    numero[strcspn(numero, "\n")] = 0;
+
+    // remover espaços
+    char temp[50];
+    int idx = 0;
+    int i = 0;
+    while (numero[i] != '\0') {
+        if (numero[i] != ' ')
+        temp[idx++] = numero[i];
+        i++;
+    }
+    temp[idx] = '\0';
+    strcpy(numero, temp);
+
+    // Adicionar caracteres nas posições específicas caso não existam
+    if (numero[0] != '(') {
+        adicionar_string(numero, 0, '(');
+    }
+    if (numero[3] != ')') {
+        adicionar_string(numero, 3, ')');
+    }
+    if (numero[9] != '-') {
+        adicionar_string(numero, 9, '-');
+    }
+
+    adicionar_string(numero, 4, ' ');
+
+    return 0;
 }

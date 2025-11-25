@@ -9,7 +9,7 @@
 #define MAX_VETOR 20
 
 #define MAX_NOME 100
-#define MAX_TELEFONE 14
+#define MAX_TELEFONE 32
 #define MAX_EMAIL 100
 #define MAX_DATA 11
 #define MAX_HORA 6
@@ -60,5 +60,6 @@ enum AgendaOperacao {
 
 // Função utilitária para validar o formato de um e-mail
 bool email_check(const char *email);
+int validarTelefone(char *numero);
 
 #endif

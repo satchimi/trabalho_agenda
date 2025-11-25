@@ -180,13 +180,14 @@ static void menu_adicionar_contato()
         bool pronto = false;
         while (!pronto)
         {
-            printf("\nDigite o seu telefone. (Ex: 5586994523978): ");
+            printf("\nDigite o seu telefone. (Ex: 86994523978): ");
 
             // ler_palavra lê até o primeiro espaço; retorno 0 significa vazio
             if (ler_palavra(contato.telefone, MAX_TELEFONE) == 0) {
                 puts("\nO campo de telefone nao pode estar vazio!");
                 continue;
             }
+            validarTelefone(contato.telefone);
             pronto = true;
         }
     }
@@ -447,72 +448,3 @@ static void menu_deletar_tarefa()
 {
     puts("menu deletar tarefa");
 }
-
-
-/*
-static void menu_deletar_contato()
-{
-    int id;
-
-    // Primeiro exibe a lista; se estiver vazia, encerra
-    if (listaContatos(contatos, *quant) == 0) return 0;
-
-    printf("Digite o numero do contato que voce quer deletar: ");
-    scanf(" %d", &id);
-
-    while(getchar() != '\n'); // limpa buffer do teclado
-
-    // Se o número informado não existe
-    if (id < 1 || id > *quant) {
-        printf("\nErro: Contato %d nao existe\n\n", id);
-        return 0;
-    }
-
-    // "Empurra" os contatos para cima, sobrescrevendo o removido
-    for ( ; id < *quant; id++) {
-        contatos[id - 1] = contatos[id];
-    }
-
-    (*quant)--; // diminui o total de contatos após o usuario deletar um escolhido
-
-    printf("\nContato %d deletado.\n\n", id);
-
-    return 1;
-}
-*/
-
-
-
-
-/*
-static void operacao_contatos(int operacao)
-{
-    static int quantContatos = 0;
-
-    switch (operacao) {
-        case OPER_ADICIONAR:
-            quantContatos += adicionarContato(contatos, quantContatos);
-            break;
-        case OPER_LISTAR:
-            listaContatos(contatos, quantContatos);
-            break;
-        case OPER_BUSCAR:
-            pesquisarContato(contatos, quantContatos);
-            break;
-        case OPER_DELETAR:
-            deletarContato(contatos, &quantContatos);
-            break;
-    }
-
-}
-
-static void operacao_compromissos(int operacao)
-{
-
-}
-
-static void operacao_tarefas(int operacao)
-{
-
-}
-*/
