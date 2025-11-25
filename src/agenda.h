@@ -14,48 +14,55 @@
 #define MAX_DESCRICAO 500
 #define MAX_TITULO 100
 
+// Estrutura que representa um contato na agenda
 typedef struct structContato
 {
-    char nome[MAX_NOME];
-    char telefone[MAX_TELEFONE];
-    char email[MAX_EMAIL];
+    char nome[MAX_NOME];            // Nome do contato
+    char telefone[MAX_TELEFONE];    // Número de telefone do contato
+    char email[MAX_EMAIL];          // Endereço de e-mail do contato
 } Contato;
 
+// Estrutura que representa um compromisso
 typedef struct structCompromisso
 {
-    char data[11];
-    char hora[6];
-    char descricao[MAX_DESCRICAO];
+    char data[11];                  // Data do compromisso  
+    char hora[6];                   // Hora do compromisso 
+    char descricao[MAX_DESCRICAO];  // Descrição do compromisso
 } Compromisso;
 
+// Estrutura que representa uma tarefa
 typedef struct structTarefa
 {
-    char titulo[MAX_TITULO];
-    unsigned int prioridade;
-    unsigned int status;
+    char titulo[MAX_TITULO];        // Título da tarefa
+    unsigned int prioridade;        // Prioridade da tarefa 
+    unsigned int status;            // Status da tarefa 
 } Tarefa;
 
+// Enumeração das opções principais do menu da agenda
 enum AgendaOpcao {
-    OP_CONTATOS = 1,
-    OP_COMPROMISSOS = 2,
-    OP_TAREFAS = 3,
-    OP_SAIR = 4
+    OP_CONTATOS = 1,     // Menu de contatos
+    OP_COMPROMISSOS = 2, // Menu de compromissos
+    OP_TAREFAS = 3,      // Menu de tarefas
+    OP_SAIR = 4          // Finalizar o programa
 };
 
+// Enumeração das operações disponíveis dentro de cada menu
 enum AgendaOperacao {
-    OPER_ADICIONAR = 1,
-    OPER_LISTAR = 2,
-    OPER_BUSCAR = 3,
-    OPER_DELETAR = 4,
-    OPER_VOLTAR = 5,
-    OPER_SAIR = 6
+    OPER_ADICIONAR = 1,  // Adicionar um item
+    OPER_LISTAR = 2,     // Listar itens existentes
+    OPER_BUSCAR = 3,     // Buscar item específico
+    OPER_DELETAR = 4,    // Excluir item
+    OPER_VOLTAR = 5,     // Voltar ao menu anterior
+    OPER_SAIR = 6        // Sair do sistema
 };
 
-int adicionarContato(Contato contatos[], int quant);
-int listaContatos(Contato contatos[], int quant);
-int pesquisarContato(Contato contatos[], int quant);
-int deletarContato(Contato contatos[], int* quant);
+// Declaração das funções relacionadas aos contatos
+int adicionarContato(Contato contatos[], int quant); // Adiciona um novo contato
+int listaContatos(Contato contatos[], int quant);    // Lista todos os contatos
+int pesquisarContato(Contato contatos[], int quant); // Pesquisa um contato pelo nome
+int deletarContato(Contato contatos[], int* quant);  // Remove um contato da lista
 
+// Função utilitária para validar o formato de um e-mail
 bool email_check(const char *email);
 
 #endif
