@@ -11,6 +11,8 @@
 #define MAX_NOME 100
 #define MAX_TELEFONE 14
 #define MAX_EMAIL 100
+#define MAX_DATA 11
+#define MAX_HORA 6
 #define MAX_DESCRICAO 500
 #define MAX_TITULO 100
 
@@ -25,8 +27,8 @@ typedef struct structContato
 // Estrutura que representa um compromisso
 typedef struct structCompromisso
 {
-    char data[11];                  // Data do compromisso  
-    char hora[6];                   // Hora do compromisso 
+    char data[MAX_DATA];                  // Data do compromisso  
+    char hora[MAX_HORA];                   // Hora do compromisso 
     char descricao[MAX_DESCRICAO];  // Descrição do compromisso
 } Compromisso;
 
@@ -34,8 +36,8 @@ typedef struct structCompromisso
 typedef struct structTarefa
 {
     char titulo[MAX_TITULO];        // Título da tarefa
-    unsigned int prioridade;        // Prioridade da tarefa 
-    unsigned int status;            // Status da tarefa 
+    int prioridade;        // Prioridade da tarefa 
+    int status;            // Status da tarefa 
 } Tarefa;
 
 // Enumeração das opções principais do menu da agenda
@@ -55,12 +57,6 @@ enum AgendaOperacao {
     OPER_VOLTAR = 5,     // Voltar ao menu anterior
     OPER_SAIR = 6        // Sair do sistema
 };
-
-// Declaração das funções relacionadas aos contatos
-int adicionarContato(Contato contatos[], int quant); // Adiciona um novo contato
-int listaContatos(Contato contatos[], int quant);    // Lista todos os contatos
-int pesquisarContato(Contato contatos[], int quant); // Pesquisa um contato pelo nome
-int deletarContato(Contato contatos[], int* quant);  // Remove um contato da lista
 
 // Função utilitária para validar o formato de um e-mail
 bool email_check(const char *email);

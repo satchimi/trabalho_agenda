@@ -2,64 +2,58 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "agenda.h"
+#include "leitor_input.h"
 
 //--------------FUNCOES-------------------------
 
-void menu_secundario(int tipo_agenda);
+static void menu_principal();
+static void menu_secundario(int tipo_agenda);
 
-void menu_selecionar_opcao(int* opcao);
-void menu_selecionar_operacao(int tipo_agenda, int* operacao);
 
-void operacao_contatos(int operacao);
-void operacao_compromissos(int operacao);
-void operacao_tarefas(int operacao);
+static void menu_adicionar_contato();
+static void menu_listar_contato();
+static void menu_buscar_contato();
+static void menu_deletar_contato();
 
-//-------------VARIAVEIS GLOBAIS-----------------
+static void menu_adicionar_compromisso();
+static void menu_listar_compromisso();
+static void menu_buscar_compromisso();
+static void menu_deletar_compromisso();
 
-//vetor de ponteiros para funcoes de operação de tarefas
-void (*operacoes_agenda[3])(int) = {&operacao_contatos, &operacao_compromissos, &operacao_tarefas};
+static void menu_adicionar_tarefa();
+static void menu_listar_tarefa();
+static void menu_buscar_tarefa();
+static void menu_deletar_tarefa();
+
+
+//-------------VARIAVEIS-----------------
+
+static void (*menu_agendas[3][4])(void) = {
+    &menu_adicionar_contato,     &menu_listar_contato,     &menu_buscar_contato,     &menu_deletar_contato,
+    &menu_adicionar_compromisso, &menu_listar_compromisso, &menu_buscar_compromisso, &menu_deletar_compromisso,
+    &menu_adicionar_tarefa,      &menu_listar_tarefa,      &menu_buscar_tarefa,      &menu_deletar_tarefa
+};
 
 //var que controla quando o programa deve terminar
 bool terminado_global = false;
 
-//var globais das agendas
-Contato contatos[MAX_VETOR] = {};
-Compromisso compromissos[MAX_VETOR] = {};
-Tarefa tarefas[MAX_VETOR] = {};
+//var das agendas
+static Contato contatos[MAX_VETOR] = {};
+static Compromisso compromissos[MAX_VETOR] = {};
+static Tarefa tarefas[MAX_VETOR] = {};
 
-//----------------------------------------------
+static int qntdContatos = 0;
+static int qntdCompromissos = 0;
+static int qntdTarefas = 0;
+
+//-----------------------------------------------------
 
 int main(void)
 {
-    int opcao_agenda;
-
     system("cls");
-
-    //MENU PRINCIPAL
-    while(!terminado_global)
-    {
-        menu_selecionar_opcao(&opcao_agenda);
-
-        switch (opcao_agenda)
-        {
-        case OP_CONTATOS: case OP_COMPROMISSOS: case OP_TAREFAS:
-
-            menu_secundario(opcao_agenda);
-
-            break;
-
-        case OP_SAIR:
-
-            terminado_global = true;
-
-            break;
-
-        default:
-            system("cls");
-            puts("Opcao invalida!");
-
-            break;
-        }
+    
+    while(!terminado_global) {
+        menu_principal();
     }
 
     return 0;
@@ -67,62 +61,11 @@ int main(void)
 
 //-----------DEFINICAO DAS FUNCOES---------------------
 
-//*************************************************************
-//* Controla o menu que aparece apos escolher o tipo de agenda *
-//**************************************************************
-void menu_secundario(int tipo_agenda)
+static void menu_principal()
 {
-    //var que controla quando encerrar o menu secundario
-    bool terminado_menu_sec = false;
+    int tipo_agenda;
 
-    int opcao_operacao;
-
-    system("cls");
-
-    while (!terminado_menu_sec)
-    {
-
-        menu_selecionar_operacao(tipo_agenda, &opcao_operacao);
-    
-        switch (opcao_operacao)
-        {
-        case OPER_ADICIONAR: case OPER_BUSCAR: case OPER_LISTAR: case OPER_DELETAR:
-            system("cls");
-
-            operacoes_agenda[tipo_agenda - 1](opcao_operacao);
-
-            break;
-
-        case OPER_VOLTAR:
-            system("cls");
-
-            terminado_menu_sec = true;
-
-            break;
-    
-        case OPER_SAIR:
-    
-            terminado_menu_sec = true;
-            terminado_global = true;
-
-            break;
-        
-        default:
-            system("cls");
-            puts("Operacao invalida!");
-    
-            break;
-        }
-    }
-}
-
-//**************************************************************************
-//* Recebe uma variavel de opcao por referencia, imprime as opções na tela *
-//* e pede ao usuario para escolher a opcao. O valor escolhido é passado à *
-//* variavel de opcao recebida.                                            *
-//**************************************************************************
-void menu_selecionar_opcao(int* opcao)
-{
+    puts("--------------------------");
     puts("          AGENDA          ");
     puts("--------------------------");
 
@@ -132,67 +75,444 @@ void menu_selecionar_opcao(int* opcao)
     puts("4. Sair do Programa");
 
     printf("\nEscolha uma opcao: ");
-    scanf(" %d", opcao);
+    scanf(" %d", &tipo_agenda);
 
     while(getchar() != '\n');
+
+    switch (tipo_agenda) {
+        case OP_CONTATOS: case OP_COMPROMISSOS: case OP_TAREFAS:
+            system("cls");
+            menu_secundario(tipo_agenda);
+            break;
+        case OP_SAIR:
+            terminado_global = true;
+            break;
+        default:
+            system("cls");
+            puts("Opcao invalida!");
+            break;
+    }
 }
 
-//**************************************************************************
-//* Recebe uma variavel que indica qual o tipo de agenda escolhido e uma   *
-//* variavel de operacao por referencia. Imprime o menu de acordo com o    *
-//* tipo de agenda e pede ao usuario para escolher a operacao. O valor     *
-//* escolhido é passado à variavel de operacao recebida.                   *
-//**************************************************************************
-void menu_selecionar_operacao(int tipo_agenda, int* operacao)
+//*************************************************************
+//* Controla o menu que aparece apos escolher o tipo de agenda *
+//**************************************************************
+static void menu_secundario(int tipo_agenda)
 {
-    char* agenda_op_nomes[3] = {"contato", "compromisso", "tarefa"};
+    //var que controla quando sair do menu secundario
+    bool sair_menu_sec = false;
 
-    char* agenda = agenda_op_nomes[tipo_agenda - 1];
+    int tipo_operacao;
 
-    printf("1. Adicionar novo(a) %s\n", agenda);
-    printf("2. Listar todos(as) os(as) %ss\n", agenda);
-    printf("3. Buscar um(a) %s especifico(a)\n", agenda);
-    printf("4. Deletar um(a) %s\n", agenda);
-    puts("5. Voltar ao menu anterior");
-    puts("6. Sair do sistema");
+    while (!sair_menu_sec)
+    {
+        char* agenda_op_nomes[] = {"contato", "compromisso", "tarefa"};
 
-    printf("\nEscolha uma opcao: ");
-    scanf(" %d", operacao);
+        char* agenda = agenda_op_nomes[tipo_agenda - 1];
 
-    while(getchar() != '\n');
+        printf("1. Adicionar novo(a) %s\n", agenda);
+        printf("2. Listar todos(as) os(as) %ss\n", agenda);
+        printf("3. Buscar um(a) %s especifico(a)\n", agenda);
+        printf("4. Deletar %s\n", agenda);
+        puts("5. Voltar ao menu anterior");
+        puts("6. Sair do sistema");
+
+        printf("\nEscolha uma opcao: ");
+        scanf(" %d", &tipo_operacao);
+
+        while(getchar() != '\n');
+    
+        switch (tipo_operacao) {
+            case OPER_ADICIONAR: case OPER_BUSCAR: case OPER_LISTAR: case OPER_DELETAR:
+                system("cls");
+                menu_agendas[tipo_agenda - 1][tipo_operacao - 1]();
+                break;
+            case OPER_VOLTAR:
+                system("cls");
+                sair_menu_sec = true;
+                break;
+            case OPER_SAIR:
+                sair_menu_sec = true;
+                terminado_global = true;
+                break;
+            default:
+                system("cls");
+                puts("Operacao invalida!");
+                break;
+        }
+    }
 }
 
-void operacao_contatos(int operacao)
+
+
+
+static void menu_adicionar_contato()
+{
+    // Verifica se o número atual de contatos atingiu o limite máximo
+    if (qntdContatos >= MAX_VETOR) {
+        printf("\nA agenda de contatos está cheia.\n");
+        system("cls");
+        return;
+    }
+
+    Contato contato;
+
+    printf("\n--- Cadastro de Contato ---\n");
+
+    // ----- Leitura do nome -----
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite o nome do contato a ser salvo: ");
+
+            // ler_linha retorna 0 se o usuário apenas apertar ENTER
+            if (ler_linha(contato.nome, MAX_NOME) == 0) {
+                puts("\nO campo de nome nao pode estar vazio!");
+                continue; // repete a pergunta
+            }
+            pronto = true; // nome preenchido
+        }
+    }
+
+    // ----- Leitura do telefone -----
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite o seu telefone. (Ex: 5586994523978): ");
+
+            // ler_palavra lê até o primeiro espaço; retorno 0 significa vazio
+            if (ler_palavra(contato.telefone, MAX_TELEFONE) == 0) {
+                puts("\nO campo de telefone nao pode estar vazio!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+
+    // ----- Leitura do e-mail -----
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite o seu e-mail: ");
+
+            if (ler_palavra(contato.email, MAX_EMAIL) == 0) {
+                puts("\nO campo de email nao pode estar vazio!");
+                continue;
+            }
+
+            // Valida o formato do e-mail
+            if (email_check(contato.email) == false) {
+                puts("\nFormato de email errado! Formato certo: nome@servidor.dominio");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+    printf("\n");
+
+    contatos[qntdContatos++] = contato;
+
+    system("cls"); // limpa a tela após o cadastro
+}
+
+static void menu_listar_contato()
+{
+    printf("\n--- Lista de Contatos ---\n");
+
+    // Se não existem contatos cadastrados
+    if (qntdContatos == 0) {
+        printf("\nNenhum contato cadastrado.\n\n");
+        return;
+    }
+
+    // Percorre todos os contatos e exibe
+    for (int i = 0; i < qntdContatos; i++) {
+        printf("\n[Contato %d]\n", i + 1);
+        printf("Nome: %s\n", contatos[i].nome);
+        printf("Telefone: %s\n", contatos[i].telefone);
+        printf("E-mail: %s\n\n", contatos[i].email);
+    }
+}
+
+static void menu_buscar_contato()
+{
+    puts("menu buscar contato");
+}
+
+static void menu_deletar_contato()
+{
+    int id;
+
+    if (qntdContatos == 0) {
+        printf("\nNenhum contato cadastrado.\n\n");
+        return;
+    }
+
+    menu_listar_contato();
+
+    printf("Digite o numero do contato que voce quer deletar: ");
+    scanf(" %d", &id);
+
+    while(getchar() != '\n'); // limpa buffer do teclado
+
+    // Se o número informado não existe
+    if (id < 1 || id > qntdContatos) {
+        printf("\nErro: Contato %d nao existe\n\n", id);
+        return;
+    }
+
+    // "Empurra" os contatos para cima, sobrescrevendo o removido
+    for ( ; id < qntdContatos; id++) {
+        contatos[id - 1] = contatos[id];
+    }
+
+    qntdContatos--; // diminui o total de contatos após o usuario deletar um escolhido
+
+    printf("\nContato %d deletado.\n\n", id);
+}
+
+static void menu_adicionar_compromisso()
+{
+    if (qntdCompromissos >= MAX_VETOR) {
+        printf("\nA agenda de compromissos está cheia.\n");
+        system("cls");
+        return;
+    }
+
+    Compromisso compromisso;
+
+    printf("\n--- Cadastro de Compromisso ---\n");
+
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite a data do compromisso (DD/MM/AAAA): ");
+
+            if (ler_palavra(compromisso.data, MAX_DATA) == 0) {
+                puts("\nO campo de data nao pode estar vazio!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite a hora do compromisso (HH:MM): ");
+
+            if (ler_palavra(compromisso.hora, MAX_HORA) == 0) {
+                puts("\nO campo de hora nao pode estar vazio!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite a descricao do compromisso (Max. 500 caracteres): ");
+
+            if (ler_linha(compromisso.descricao, MAX_DESCRICAO) == 0) {
+                puts("\nO campo de descricao nao pode estar vazio!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+    printf("\n");
+
+    compromissos[qntdCompromissos++] = compromisso;
+
+    system("cls");
+}
+
+static void menu_listar_compromisso()
+{
+    printf("\n--- Lista de Compromissos ---\n");
+
+    if (qntdCompromissos == 0) {
+        printf("\nNenhum compromisso cadastrado.\n\n");
+        return;
+    }
+
+    for (int i = 0; i < qntdCompromissos; i++) {
+        printf("\n[Compromisso %d]\n", i + 1);
+        printf("Data: %s\n", compromissos[i].data);
+        printf("Hora: %s\n", compromissos[i].hora);
+        printf("Descricao: %s\n\n", compromissos[i].descricao);
+    }
+}
+
+static void menu_buscar_compromisso()
+{
+    puts("menu buscar compromisso");
+}
+
+static void menu_deletar_compromisso()
+{
+    puts("menu deletar compromisso");
+}
+
+static void menu_adicionar_tarefa()
+{
+    if (qntdTarefas >= MAX_VETOR) {
+        printf("\nA agenda de tarefas está cheia.\n");
+        system("cls");
+        return;
+    }
+
+    Tarefa tarefa;
+
+    printf("\n--- Cadastro de Tarefa ---\n");
+
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite o titulo da tarefa: ");
+
+            if (ler_linha(tarefa.titulo, MAX_TITULO) == 0) {
+                puts("\nO campo de titulo nao pode estar vazio!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+    
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite o numero da prioridade da tarefa (Menor numero = Maior prioridade): ");
+
+            if (ler_numero(&tarefa.prioridade) == 0) {
+                puts("\nNumero invalido!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+
+    {
+        bool pronto = false;
+        while (!pronto)
+        {
+            printf("\nDigite o status da tarefa (0 = Pendente // 1 = Concluida): ");
+
+            if (ler_numero(&tarefa.status) == 0) {
+                puts("\nNumero invalido!");
+                continue;
+            }
+            pronto = true;
+        }
+    }
+    printf("\n");
+
+    tarefas[qntdTarefas++] = tarefa;
+
+    system("cls");
+}
+
+static void menu_listar_tarefa()
+{
+    printf("\n--- Lista de Tarefas ---\n");
+
+    if (qntdTarefas == 0) {
+        printf("\nNenhuma tarefa cadastrada.\n\n");
+        return;
+    }
+
+    for (int i = 0; i < qntdTarefas; i++) {
+        printf("\n[Tarefa %d]\n", i + 1);
+        printf("Titulo: %s\n", tarefas[i].titulo);
+        printf("Prioridade: %d\n", tarefas[i].prioridade);
+        printf("Status: %s\n\n", tarefas[i].status == 0 ? "PENDENTE" : "CONCLUIDA");
+    }
+}
+
+static void menu_buscar_tarefa()
+{
+    puts("menu buscar tarefa");
+}
+
+static void menu_deletar_tarefa()
+{
+    puts("menu deletar tarefa");
+}
+
+
+/*
+static void menu_deletar_contato()
+{
+    int id;
+
+    // Primeiro exibe a lista; se estiver vazia, encerra
+    if (listaContatos(contatos, *quant) == 0) return 0;
+
+    printf("Digite o numero do contato que voce quer deletar: ");
+    scanf(" %d", &id);
+
+    while(getchar() != '\n'); // limpa buffer do teclado
+
+    // Se o número informado não existe
+    if (id < 1 || id > *quant) {
+        printf("\nErro: Contato %d nao existe\n\n", id);
+        return 0;
+    }
+
+    // "Empurra" os contatos para cima, sobrescrevendo o removido
+    for ( ; id < *quant; id++) {
+        contatos[id - 1] = contatos[id];
+    }
+
+    (*quant)--; // diminui o total de contatos após o usuario deletar um escolhido
+
+    printf("\nContato %d deletado.\n\n", id);
+
+    return 1;
+}
+*/
+
+
+
+
+/*
+static void operacao_contatos(int operacao)
 {
     static int quantContatos = 0;
 
-    switch (operacao)
-    {
-    case OPER_ADICIONAR:
-        quantContatos += adicionarContato(contatos, quantContatos);
-        break;
-
-    case OPER_LISTAR:
-        listaContatos(contatos, quantContatos);
-        break;
-
-    case OPER_BUSCAR:
-        pesquisarContato(contatos, quantContatos);
-        break;
-
-    case OPER_DELETAR:
-        deletarContato(contatos, &quantContatos);
-        break;
+    switch (operacao) {
+        case OPER_ADICIONAR:
+            quantContatos += adicionarContato(contatos, quantContatos);
+            break;
+        case OPER_LISTAR:
+            listaContatos(contatos, quantContatos);
+            break;
+        case OPER_BUSCAR:
+            pesquisarContato(contatos, quantContatos);
+            break;
+        case OPER_DELETAR:
+            deletarContato(contatos, &quantContatos);
+            break;
     }
 
 }
 
-void operacao_compromissos(int operacao)
+static void operacao_compromissos(int operacao)
 {
 
 }
 
-void operacao_tarefas(int operacao)
+static void operacao_tarefas(int operacao)
 {
 
 }
+*/

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "leitor_string.h"
+#include "leitor_input.h"
 
 int ler_linha(char* str, int n)
 {
@@ -36,4 +36,16 @@ int ler_palavra(char *str, int n)
     str[i] = '\0';
 
     return i;
+}
+
+int ler_numero(int *num)
+{
+    int n = 0;
+
+    if (scanf("%d", num) == 1)
+        n = 1;
+    
+    while(getchar() != '\n');
+
+    return n;
 }
