@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "agenda.h"
 #include "leitor_input.h"
 
@@ -93,4 +94,37 @@ int validarHora (char *hora) {
     if (hora[2] != ':') {
         adicionar_string(hora, 2, ':');
     }
+}
+
+//funcao helper
+bool anoBissexto(int ano) {
+    if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
+        return true;
+    }
+    return false;
+}
+
+bool data_check(const char* data)
+{
+    int dia = atoi(data);
+    data += 3;
+    int mes = atoi(data);
+    data += 3;
+    int ano = atoi(data);
+
+    if (ano < 1 || mes < 1 || mes > 12 || mes < 1) {
+        return false;
+    }
+
+    int diasNoMes[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    if (mes == 2 && anoBissexto(ano)) {
+        diasNoMes[2] = 29;
+    }
+
+    if (dia > diasNoMes[mes]) {
+        return false;
+    }
+
+    return true;
 }
