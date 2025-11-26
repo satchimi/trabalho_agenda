@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #include "agenda.h"
 #include "leitor_input.h"
 
@@ -249,7 +251,56 @@ static void menu_listar_contato()
 
 static void menu_buscar_contato()
 {
-    puts("menu buscar contato");
+    if (qntdContatos == 0) {
+        printf("\nNenhum contato cadastrado.\n\n");
+        return;
+    }
+
+    char termo_busca[MAX_NOME];
+    bool encontrou = false;
+
+    printf("\n--- Buscar Contato ---\n");
+    printf("Digite o nome do contato (ou parte dele) para buscar: ");
+    
+    if (ler_linha(termo_busca, MAX_NOME) == 0) {
+        printf("\nTermo de busca invalido!\n\n");
+        return;
+    }
+
+    printf("\n--- Resultados da Busca ---\n");
+    
+    for (int i = 0; i < qntdContatos; i++) {
+        // Busca case insensitive no nome do contato
+        char nome_minusculo[MAX_NOME];
+        char termo_minusculo[MAX_NOME];
+        
+        // Converte o nome do contato para minúsculo
+        int j;
+        for (j = 0; contatos[i].nome[j] != '\0'; j++) {
+            nome_minusculo[j] = tolower(contatos[i].nome[j]);
+        }
+        nome_minusculo[j] = '\0';
+        
+        // Converte o termo de busca para minúsculo
+        for (j = 0; termo_busca[j] != '\0'; j++) {
+            termo_minusculo[j] = tolower(termo_busca[j]);
+        }
+        termo_minusculo[j] = '\0';
+        
+        if (strstr(nome_minusculo, termo_minusculo) != NULL) {
+            printf("\n[Contato %d]\n", i + 1);
+            printf("Nome: %s\n", contatos[i].nome);
+            printf("Telefone: %s\n", contatos[i].telefone);
+            printf("E-mail: %s\n", contatos[i].email);
+            encontrou = true;
+        }
+    }
+
+    if (!encontrou) {
+        printf("\nNenhum contato encontrado com o termo: '%s'\n\n", termo_busca);
+    } else {
+        printf("\n");
+    }
 }
 
 static void menu_deletar_contato()
@@ -384,12 +435,98 @@ static void menu_listar_compromisso()
 
 static void menu_buscar_compromisso()
 {
-    puts("menu buscar compromisso");
+    if (qntdCompromissos == 0) {
+        printf("\nNenhum compromisso cadastrado.\n\n");
+        return;
+    }
+
+    char termo_busca[MAX_DESCRICAO];
+    bool encontrou = false;
+
+    printf("\n--- Buscar Compromisso ---\n");
+    printf("Digite o nome do compromisso (ou parte dele) para buscar: ");
+    
+    if (ler_linha(termo_busca, MAX_DESCRICAO) == 0) {
+        printf("\nTermo de busca invalido!\n\n");
+        return;
+    }
+
+    printf("\n--- Resultados da Busca ---\n");
+    
+    for (int i = 0; i < qntdCompromissos; i++) {
+        // Busca case insensitive no nome do compromisso
+        // Assumindo que o primeiro campo da descrição é o nome/título
+        char nome_minusculo[MAX_DESCRICAO];
+        char termo_minusculo[MAX_DESCRICAO];
+        
+        // Extrai o "nome" do compromisso (primeira linha ou primeira parte da descrição)
+        char nome_compromisso[MAX_DESCRICAO];
+        strcpy(nome_compromisso, compromissos[i].descricao);
+        
+        // Se a descrição tiver múltiplas linhas, pega apenas a primeira linha
+        for (int j = 0; nome_compromisso[j]; j++) {
+            if (nome_compromisso[j] == '\n') {
+                nome_compromisso[j] = '\0';
+                break;
+            }
+        }
+        
+        // Converte para minúsculo para busca case insensitive
+        for (int j = 0; nome_compromisso[j]; j++) {
+            nome_minusculo[j] = tolower(nome_compromisso[j]);
+        }
+        nome_minusculo[strlen(nome_compromisso)] = '\0';
+        
+        for (int j = 0; termo_busca[j]; j++) {
+            termo_minusculo[j] = tolower(termo_busca[j]);
+        }
+        termo_minusculo[strlen(termo_busca)] = '\0';
+        
+        if (strstr(nome_minusculo, termo_minusculo) != NULL) {
+            printf("\n[Compromisso %d]\n", i + 1);
+            printf("Nome: %s\n", nome_compromisso);
+            printf("Data: %s\n", compromissos[i].data);
+            printf("Hora: %s\n", compromissos[i].hora);
+            printf("Descricao Completa:\n%s\n", compromissos[i].descricao);
+            encontrou = true;
+        }
+    }
+
+    if (!encontrou) {
+        printf("\nNenhum compromisso encontrado com o termo: %s\n\n", termo_busca);
+    } else {
+        printf("\n");
+    }
 }
 
 static void menu_deletar_compromisso()
 {
-    puts("menu deletar compromisso");
+    int id;
+
+    if (qntdCompromissos == 0) {
+        printf("\nNenhum compromisso cadastrado.\n\n");
+        return;
+    }
+
+    menu_listar_compromisso();
+
+    printf("Digite o numero do compromisso que voce quer deletar: ");
+    scanf(" %d", &id);
+
+    while(getchar() != '\n');
+
+    if (id < 1 || id > qntdCompromissos) {
+        printf("\nErro: Compromisso %d nao existe\n\n", id);
+        return;
+    }
+
+    for ( ; id < qntdCompromissos; id++) {
+        compromissos[id - 1] = compromissos[id];
+    }
+
+    qntdCompromissos--;
+
+    printf("\nCompromisso deletado com sucesso.\n\n");
 }
 
 static void menu_adicionar_tarefa()
@@ -471,10 +608,85 @@ static void menu_listar_tarefa()
 
 static void menu_buscar_tarefa()
 {
-    puts("menu buscar tarefa");
+    if (qntdTarefas == 0) {
+        printf("\nNenhuma tarefa cadastrada.\n\n");
+        return;
+    }
+
+    char termo_busca[MAX_TITULO];
+    bool encontrou = false;
+
+    printf("\n--- Buscar Tarefa ---\n");
+    printf("Digite o titulo da tarefa (ou parte dele) para buscar: ");
+    
+    if (ler_linha(termo_busca, MAX_TITULO) == 0) {
+        printf("\nTermo de busca invalido!\n\n");
+        return;
+    }
+
+    printf("\n--- Resultados da Busca ---\n");
+    
+    for (int i = 0; i < qntdTarefas; i++) {
+        // Busca case insensitive no título da tarefa
+        char titulo_minusculo[MAX_TITULO];
+        char termo_minusculo[MAX_TITULO];
+        
+        // Converte o título da tarefa para minúsculo
+        int j;
+        for (j = 0; tarefas[i].titulo[j] != '\0'; j++) {
+            titulo_minusculo[j] = tolower(tarefas[i].titulo[j]);
+        }
+        titulo_minusculo[j] = '\0';
+        
+        // Converte o termo de busca para minúsculo
+        for (j = 0; termo_busca[j] != '\0'; j++) {
+            termo_minusculo[j] = tolower(termo_busca[j]);
+        }
+        termo_minusculo[j] = '\0';
+        
+        if (strstr(titulo_minusculo, termo_minusculo) != NULL) {
+            printf("\n[Tarefa %d]\n", i + 1);
+            printf("Titulo: %s\n", tarefas[i].titulo);
+            printf("Prioridade: %d\n", tarefas[i].prioridade);
+            printf("Status: %s\n", tarefas[i].status == 0 ? "PENDENTE" : "CONCLUIDA");
+            encontrou = true;
+        }
+    }
+
+    if (!encontrou) {
+        printf("\nNenhuma tarefa encontrada com o termo: '%s'\n\n", termo_busca);
+    } else {
+        printf("\n");
+    }
 }
 
 static void menu_deletar_tarefa()
 {
-    puts("menu deletar tarefa");
+    int id;
+
+    if (qntdTarefas == 0) {
+        printf("\nNenhuma tarefa cadastrada.\n\n");
+        return;
+    }
+
+    menu_listar_tarefa();
+
+    printf("Digite o numero da tarefa que voce quer deletar: ");
+    scanf(" %d", &id);
+
+    while(getchar() != '\n');
+
+    if (id < 1 || id > qntdTarefas) {
+        printf("\nErro: Tarefa %d nao existe\n\n", id);
+        return;
+    }
+
+    int posicao = id;
+    for ( ; posicao < qntdTarefas; posicao++) {
+        tarefas[posicao - 1] = tarefas[posicao];
+    }
+
+    qntdTarefas--;
+
+    printf("\nTarefa deletada com sucesso.\n\n");
 }
