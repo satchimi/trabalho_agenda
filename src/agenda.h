@@ -59,10 +59,10 @@ enum AgendaOperacao {
 };
 
 // Função utilitária para validar o formato de um e-mail
-bool email_check(const char *email);
 int validarTelefone(char *numero);
-int formatarHora (char *hora);
 int validarHora (char *hora);
+int formatarHora (char *hora);
+bool email_check(const char *email);
 bool data_check(const char* data);
 bool hora_check(const char* hora);
 

@@ -4,6 +4,72 @@
 #include "agenda.h"
 #include "leitor_input.h"
 
+int validarTelefone(char *numero) {
+
+    // remove espaços vazios nas laterais
+    numero[strcspn(numero, "\n")] = 0;
+
+    // remover espaços
+    char temp[50];
+    int idx = 0;
+    int i = 0;
+    while (numero[i] != '\0') {
+        if (numero[i] != ' ')
+        temp[idx++] = numero[i];
+        i++;
+    }
+    temp[idx] = '\0';
+    strcpy(numero, temp);
+
+    // Adicionar caracteres nas posições específicas caso não existam
+    if (numero[0] != '(') {
+        adicionar_string(numero, 0, '(');
+    }
+    if (numero[3] != ')') {
+        adicionar_string(numero, 3, ')');
+    }
+    if (numero[9] != '-') {
+        adicionar_string(numero, 9, '-');
+    }
+
+    adicionar_string(numero, 4, ' ');
+
+    return 0;
+}
+
+int validarHora (char *hora) {
+    for (int i = 0; hora[i] != '\0'; i++) {
+        if (!isdigit(hora[i])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+int formatarHora (char *hora) {
+
+     // remove espaços vazios nas laterais
+    hora[strcspn(hora, "\n")] = 0;
+
+    // remover espaços
+        char temp[50];
+    int idx = 0;
+    int i = 0;
+    while (hora[i] != '\0') {
+        if (hora[i] != ' ') {
+        temp[idx++] = hora[i];
+        i++;
+        }
+    }
+    temp[idx] = '\0';
+    strcpy(hora, temp);
+
+    // Adicionar caractere ":" nas posição específica caso não exista
+    if (hora[2] != ':') {
+        adicionar_string(hora, 2, ':');
+    }
+}
 
 // Função para validar formato básico de e-mail
 bool email_check(const char *email)
@@ -41,74 +107,7 @@ bool email_check(const char *email)
     return email_valido;
 }
 
-int validarTelefone(char *numero) {
-
-    // remove espaços vazios nas laterais
-    numero[strcspn(numero, "\n")] = 0;
-
-    // remover espaços
-    char temp[50];
-    int idx = 0;
-    int i = 0;
-    while (numero[i] != '\0') {
-        if (numero[i] != ' ')
-        temp[idx++] = numero[i];
-        i++;
-    }
-    temp[idx] = '\0';
-    strcpy(numero, temp);
-
-    // Adicionar caracteres nas posições específicas caso não existam
-    if (numero[0] != '(') {
-        adicionar_string(numero, 0, '(');
-    }
-    if (numero[3] != ')') {
-        adicionar_string(numero, 3, ')');
-    }
-    if (numero[9] != '-') {
-        adicionar_string(numero, 9, '-');
-    }
-
-    adicionar_string(numero, 4, ' ');
-
-    return 0;
-}
-
-int formatarHora (char *hora) {
-
-     // remove espaços vazios nas laterais
-    hora[strcspn(hora, "\n")] = 0;
-
-    // remover espaços
-        char temp[50];
-    int idx = 0;
-    int i = 0;
-    while (hora[i] != '\0') {
-        if (hora[i] != ' ') {
-        temp[idx++] = hora[i];
-        i++;
-        }
-    }
-    temp[idx] = '\0';
-    strcpy(hora, temp);
-
-    // Adicionar caractere ":" nas posição específica caso não exista
-    if (hora[2] != ':') {
-        adicionar_string(hora, 2, ':');
-    }
-}
-
-int validarHora (char *hora) {
-    for (int i = 0; hora[i] != '\0'; i++) {
-        if (!isdigit(hora[i])) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-}
-
-//funcao helper
+//funcao helper para funcao data_check
 bool anoBissexto(int ano) {
     if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
         return true;
