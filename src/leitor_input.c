@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 #include "leitor_input.h"
 
 int ler_linha(char* str, int n)
@@ -62,4 +63,13 @@ int ler_numero(int *num)
     while(getchar() != '\n');
 
     return n;
+}
+
+bool possui_letra(const char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (isalpha((unsigned char)str[i])) {
+            return true;
+        }
+    }
+    return false;
 }
