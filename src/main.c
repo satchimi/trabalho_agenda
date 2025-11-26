@@ -438,7 +438,7 @@ static void menu_adicionar_tarefa()
         {
             printf("\nDigite o status da tarefa (0 = Pendente // 1 = Concluida): ");
 
-            if (ler_numero(&tarefa.status) == 0) {
+            if (ler_numero(&tarefa.status) == 0 || tarefa.status > 1) {
                 puts("\nNumero invalido!");
                 continue;
             }
