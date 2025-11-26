@@ -71,8 +71,6 @@ static void menu_principal()
     puts("    _____    / _ \\| |  _|  _| |  \\| | | | |/ _ \\    _____    ");
     puts("   |_____|  / ___ \\ |_| | |___| |\\  | |_| / ___ \\  |_____|   ");
     puts("           /_/   \\_\\____|_____|_| \\_|____/_/   \\_\\         ");
-
-          
     puts("----------------------------------------------------------------");
 
     puts("1. Agenda de Contatos");
@@ -193,6 +191,11 @@ static void menu_adicionar_contato()
                 puts("\nO campo de telefone nao pode estar vazio!");
                 continue;
             }
+
+            if (possui_letra(contato.telefone)) {
+                puts("\nO numero de telefone nao deve possuir letras!");
+                continue;
+            }
             validarTelefone(contato.telefone);
             pronto = true;
         }
@@ -303,6 +306,16 @@ static void menu_adicionar_compromisso()
                 puts("\nO campo de data nao pode estar vazio!");
                 continue;
             }
+
+            if (possui_letra(compromisso.data)) {
+                puts("\nA data nao deve possuir letras!");
+                continue;
+            }
+
+            if (data_check(compromisso.data) == false) {
+                puts("\nData invalida!");
+                continue;
+            }
             pronto = true;
         }
     }
@@ -315,6 +328,11 @@ static void menu_adicionar_compromisso()
 
             if (ler_palavra(compromisso.hora, MAX_HORA) == 0) {
                 puts("\nO campo de hora nao pode estar vazio!");
+                continue;
+            }
+
+            if (possui_letra(compromisso.hora)) {
+                puts("\nA hora nao deve possuir letras!");
                 continue;
             }
             validarHora(compromisso.hora);
