@@ -40,7 +40,7 @@ bool email_check(const char *email)
     return email_valido;
 }
 
-int validarTelefone(char *numero) {
+int formatarTelefone(char *numero) {
 
     // remove espaços vazios nas laterais
     numero[strcspn(numero, "\n")] = 0;
@@ -73,6 +73,33 @@ int validarTelefone(char *numero) {
     return 0;
 }
 
+int formatarData (char *data) {
+
+     // remove espaços vazios nas laterais
+    data[strcspn(data, "\n")] = 0;
+
+    // remover espaços
+        char temp[50];
+    int idx = 0;
+    int i = 0;
+    while (data[i] != '\0') {
+        if (data[i] != ' ') {
+        temp[idx++] = data[i];
+        i++;
+        }
+    }
+    temp[idx] = '\0';
+    strcpy(data, temp);
+
+    // Adicionar caractere "/" nas posições específicas caso não existam
+    if (data[2] != '/') {
+        adicionar_string(data, 2, '/');
+    }
+    if (data[5] != '/') {
+        adicionar_string(data, 5, '/');
+    }
+}
+
 int formatarHora (char *hora) {
 
      // remove espaços vazios nas laterais
@@ -100,6 +127,16 @@ int formatarHora (char *hora) {
 int validarHora (char *hora) {
     for (int i = 0; hora[i] != '\0'; i++) {
         if (!isdigit(hora[i])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+int validarData (char *data) {
+    for (int i = 0; data[i] != '\0'; i++) {
+        if (!isdigit(data[i])) {
             return false;
         } else {
             return true;

@@ -193,7 +193,7 @@ static void menu_adicionar_contato()
                 puts("\nO campo de telefone nao pode estar vazio!");
                 continue;
             }
-            validarTelefone(contato.telefone);
+            formatarTelefone(contato.telefone);
             pronto = true;
         }
     }
@@ -303,6 +303,15 @@ static void menu_adicionar_compromisso()
                 puts("\nO campo de data nao pode estar vazio!");
                 continue;
             }
+            if (ler_linha(compromisso.data, MAX_DATA) > 10) {
+                puts("\nData invalida! Formato correto: DD/MM/AAAA");
+                continue;
+            }
+            if (validarData(compromisso.data) == false) {
+                puts("\nA data nao pode conter letras!");
+                continue;
+            }
+            formatarData(compromisso.data);
             pronto = true;
         }
     }
