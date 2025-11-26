@@ -1,4 +1,5 @@
 #include <string.h>
+#include <ctype.h>
 #include "agenda.h"
 #include "leitor_input.h"
 
@@ -72,7 +73,7 @@ int validarTelefone(char *numero) {
     return 0;
 }
 
-int validarHora (char *hora) {
+int formatarHora (char *hora) {
 
      // remove espaços vazios nas laterais
     hora[strcspn(hora, "\n")] = 0;
@@ -82,9 +83,10 @@ int validarHora (char *hora) {
     int idx = 0;
     int i = 0;
     while (hora[i] != '\0') {
-        if (hora[i] != ' ')
+        if (hora[i] != ' ') {
         temp[idx++] = hora[i];
         i++;
+        }
     }
     temp[idx] = '\0';
     strcpy(hora, temp);
@@ -92,5 +94,15 @@ int validarHora (char *hora) {
     // Adicionar caractere ":" nas posição específica caso não exista
     if (hora[2] != ':') {
         adicionar_string(hora, 2, ':');
+    }
+}
+
+int validarHora (char *hora) {
+    for (int i = 0; hora[i] != '\0'; i++) {
+        if (!isdigit(hora[i])) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -4,7 +4,7 @@
 #include "agenda.h"
 #include "leitor_input.h"
 
-//--------------FUNCOES-------------------------
+//--------------FUNCOES------------------------
 
 static void menu_principal();
 static void menu_secundario(int tipo_agenda);
@@ -317,7 +317,12 @@ static void menu_adicionar_compromisso()
                 puts("\nO campo de hora nao pode estar vazio!");
                 continue;
             }
-            validarHora(compromisso.hora);
+
+            if (validarHora(compromisso.hora) == false) {
+                printf("\nA hora nao pode conter letras!");
+                continue;
+            }
+            formatarHora(compromisso.hora);
             pronto = true;
         }
     }
