@@ -62,5 +62,6 @@ enum AgendaOperacao {
 bool email_check(const char *email);
 int validarTelefone(char *numero);
 int validarHora (char *hora);
+bool data_check(const char* data);
 
 #endif
