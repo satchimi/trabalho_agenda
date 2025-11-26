@@ -64,5 +64,6 @@ int validarTelefone(char *numero);
 int formatarHora (char *hora);
 int validarHora (char *hora);
 bool data_check(const char* data);
+bool hora_check(const char* hora);
 
 #endif

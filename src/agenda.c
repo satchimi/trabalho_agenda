@@ -98,6 +98,16 @@ int formatarHora (char *hora) {
     }
 }
 
+int validarHora (char *hora) {
+    for (int i = 0; hora[i] != '\0'; i++) {
+        if (!isdigit(hora[i])) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
 //funcao helper
 bool anoBissexto(int ano) {
     if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
@@ -131,12 +141,15 @@ bool data_check(const char* data)
     return true;
 }
 
-int validarHora (char *hora) {
-    for (int i = 0; hora[i] != '\0'; i++) {
-        if (!isdigit(hora[i])) {
-            return false;
-        } else {
-            return true;
-        }
+bool hora_check(const char* hora)
+{
+    int horas = atoi(hora);
+    hora += 3;
+    int minutos = atoi(hora);
+
+    if (horas < 0 || horas > 23 || minutos < 0 || minutos > 59) {
+        return false;
     }
+
+    return true;
 }

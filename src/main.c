@@ -332,10 +332,15 @@ static void menu_adicionar_compromisso()
             }
 
             if (validarHora(compromisso.hora) == false) {
-                printf("\nA hora nao pode conter letras!");
+                puts("\nA hora nao pode conter letras!");
                 continue;
             }
             formatarHora(compromisso.hora);
+
+            if (hora_check(compromisso.hora) == false) {
+                puts("\nHora invalida!");
+                continue;
+            }
             pronto = true;
         }
     }
