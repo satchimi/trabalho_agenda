@@ -71,3 +71,26 @@ int validarTelefone(char *numero) {
 
     return 0;
 }
+
+int validarHora (char *hora) {
+
+     // remove espaços vazios nas laterais
+    hora[strcspn(hora, "\n")] = 0;
+
+    // remover espaços
+        char temp[50];
+    int idx = 0;
+    int i = 0;
+    while (hora[i] != '\0') {
+        if (hora[i] != ' ')
+        temp[idx++] = hora[i];
+        i++;
+    }
+    temp[idx] = '\0';
+    strcpy(hora, temp);
+
+    // Adicionar caractere ":" nas posição específica caso não exista
+    if (hora[2] != ':') {
+        adicionar_string(hora, 2, ':');
+    }
+}

@@ -317,6 +317,7 @@ static void menu_adicionar_compromisso()
                 puts("\nO campo de hora nao pode estar vazio!");
                 continue;
             }
+            validarHora(compromisso.hora);
             pronto = true;
         }
     }
