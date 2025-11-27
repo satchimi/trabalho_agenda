@@ -4,7 +4,7 @@
 #include "agenda.h"
 #include "leitor_input.h"
 
-int validarTelefone(char *numero) {
+int formatarTelefone(char *numero) {
 
     // remove espaços vazios nas laterais
     numero[strcspn(numero, "\n")] = 0;
@@ -33,6 +33,8 @@ int validarTelefone(char *numero) {
     }
 
     adicionar_string(numero, 4, ' ');
+
+    adicionar_string(numero, 16, '\0');
 
     return 0;
 }
@@ -117,13 +119,13 @@ bool anoBissexto(int ano) {
 
 bool data_check(const char* data)
 {
-    int dia = atoi(data);
+    int dia = atoi(data);   //Lê os dois primeiros digitos da string data e coloca na variável dia
     data += 3;
-    int mes = atoi(data);
+    int mes = atoi(data);  //Lê o tercerio e quarto digito da string data e coloca na variável mês
     data += 3;
-    int ano = atoi(data);
+    int ano = atoi(data);  //Lê os quatro ultimos digitos da string data e coloca na variável ano
 
-    if (ano < 1 || mes < 1 || mes > 12 || mes < 1) {
+    if (ano < 1 || mes < 1 || mes > 12) { //Verifica se dia, mês e ano estão dentro de intervalos coerentes
         return false;
     }
 
